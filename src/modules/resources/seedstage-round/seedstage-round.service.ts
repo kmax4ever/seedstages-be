@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateStageRoundDto } from './dto/request.dto'
 import { pick } from 'lodash'
 import { SeedstageRound } from './seedstage-round.interface'
+import { CreateStageRoundDto } from '@/modules/aggregators/admin-cms/dto/request.dto'
 
 @Injectable()
 export class SeedstageRoundsService {
@@ -20,14 +20,16 @@ export class SeedstageRoundsService {
     return this.seedstageRoundModel.create(
       pick(
         createStageRoundDto,
-        'seedstage',
-        'name',
-        'roundType',
-        'allowcation',
-        'minAllowcation',
-        'maxAllowcation',
+        'seedStageAddress',
+        'roundId',
+        'isWhitelistRound',
+        'allocation',
+        'minAllocationPerAddress',
+        'maxAllocationPerAddress',
         'startTime',
-        'endTime'
+        'endTime',
+        'raisedAmount',
+        'merkleRoot'
       )
     )
   }

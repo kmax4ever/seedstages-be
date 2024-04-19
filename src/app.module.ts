@@ -5,6 +5,7 @@ import { TasksModule } from './modules/tasks/tasks.module'
 import { ExternalsModule } from './modules/aggregators/externals/externals.module'
 
 import { CmsAdminModule } from './modules/aggregators/admin-cms/admin-cms.module'
+import { EthersModule } from './modules/adapters/ethers/ethers.module'
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { CmsAdminModule } from './modules/aggregators/admin-cms/admin-cms.module
     DatabaseModule,
     ExternalsModule,
     CmsAdminModule,
-    TasksModule
+    TasksModule,
+    EthersModule
   ]
 })
 export class AppModule {}

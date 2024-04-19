@@ -32,62 +32,23 @@ export class LoginDto {
 }
 
 export class CreateProjectDto {
-  @ApiProperty({ type: String, required: true })
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  name: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  slug: string
+  projectId: string
 
   @ApiProperty({ type: String, required: false })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  shortDescription: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  fullDescription: string
+  projectName: string
 
   @ApiProperty({ type: String, required: false })
-  @IsString()
-  @IsNotEmpty()
   @IsOptional()
-  website: string
-
-  @ApiProperty({ type: String, required: false })
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
-  telegram: string
-
-  @ApiProperty({ type: String, required: false })
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  twitter: string
-
-  @ApiProperty({ type: String, required: false })
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  discord: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  @IsUrl()
-  logo: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsUrl()
-  @IsString()
-  @IsNotEmpty()
-  banner: string
+  projectCode: string
 }
 
 export class CreateSeedstageDto {
@@ -95,12 +56,7 @@ export class CreateSeedstageDto {
   @IsString()
   @IsMongoId()
   @IsNotEmpty()
-  project: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  name: string
+  projectId: string
 
   @ApiProperty({ type: String, required: true })
   @IsMongoId()
@@ -162,10 +118,61 @@ export class CreateIouTokenDto {
 export class CreateStageRoundDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
-  @IsMongoId()
   @IsNotEmpty()
-  seedstage: string
+  seedStageAddress: string
 
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  roundId: String
+
+  @ApiProperty({ type: Boolean, required: true })
+  @IsNumber()
+  @IsNotEmpty()
+  isWhitelistRound: boolean
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  allocation: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  startTime: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  minAllocationPerAddress: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  maxAllocationPerAddress: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  endTime: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  raisedAmount: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  merkleRoot: string
+}
+
+export class UpdateSeedStageRoundDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
@@ -176,29 +183,4 @@ export class CreateStageRoundDto {
   @IsNotEmpty()
   @IsEnum(RoundType)
   roundType: string
-
-  @ApiProperty({ type: Number, required: true })
-  @IsNumber()
-  @IsNotEmpty()
-  allowcation: number
-
-  @ApiProperty({ type: Number, required: true })
-  @IsNumber()
-  @IsNotEmpty()
-  minAllowcation: number
-
-  @ApiProperty({ type: Number, required: true })
-  @IsNumber()
-  @IsNotEmpty()
-  maxAllowcation: number
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  startTime: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  endTime: string
 }

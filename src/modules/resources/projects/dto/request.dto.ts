@@ -9,17 +9,7 @@ export class GetProjectsDto extends PaginationQueriesDto {
   search: string
 }
 
-export class CreateProjectDto {
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  name: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  slug: string
-
+export class UpdateProjectDto {
   @ApiProperty({ type: String, required: false })
   @IsOptional()
   @IsString()
@@ -66,4 +56,24 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   banner: string
+}
+
+export class CreateProjectDto {
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  projectId: string
+
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  projectName: string
+
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  projectCode: string
 }

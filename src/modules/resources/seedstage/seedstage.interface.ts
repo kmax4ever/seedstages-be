@@ -5,6 +5,7 @@ export interface Seedstage extends Document {
   project: string
   name: string
   iouToken: string
+  depositToken: string
   status: string
-  stageContractAddress: string
+  seedStageAddress: string
 }

@@ -25,14 +25,8 @@ export class GetStagesDto extends PaginationQueriesDto {
 export class CreateSeedstageDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
-  @IsMongoId()
   @IsNotEmpty()
-  project: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  name: string
+  projectId: string
 
   @ApiProperty({ type: String, required: true })
   @IsMongoId()
@@ -41,7 +35,31 @@ export class CreateSeedstageDto {
   iouToken: string
 
   @ApiProperty({ type: String, required: true })
+  @IsMongoId()
   @IsString()
   @IsNotEmpty()
-  stageContractAddress: string
+  depositToken: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  seedStageAddress: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  multiSigAddress: string
+}
+
+export class UpdateSeedStageDto {
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
+  @ApiProperty({ type: String, required: false, enum: StageStatus })
+  @IsOptional()
+  @IsString()
+  @IsEnum(StageStatus)
+  status: string
 }

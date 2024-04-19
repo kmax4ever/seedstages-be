@@ -1,10 +1,9 @@
 import { Document } from 'mongoose'
 
 export interface Project extends Document {
-  id: string
-  name: string
-  code: string
-  slug: string
+  projectId: string
+  projectName: string
+  projectCode: string
   shortDescription: string
   fullDescription: string
   website: string

@@ -3,33 +3,38 @@ import { StageStatus } from './dto/general.dto'
 
 export const SeedstageSchema = new mongoose.Schema(
   {
-    project: {
+    projectId: {
       type: String,
-      ref: 'Project',
       required: true
     },
     name: {
       type: String,
-      required: true
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true
+      required: false
     },
     iouToken: {
       type: String,
-      ref: 'IouToken',
-      required: false
+      required: false,
+      lowercase: true
+    },
+    depositToken: {
+      type: String,
+      required: false,
+      lowercase: true
     },
     status: {
       type: String,
       enum: StageStatus,
-      required: true
-    },
-    stageContractAddress: {
-      type: String,
       required: false
+    },
+    seedStageAddress: {
+      type: String,
+      required: false,
+      lowercase: true
+    },
+    multiSigAddress: {
+      type: String,
+      required: false,
+      lowercase: true
     }
   },
   {

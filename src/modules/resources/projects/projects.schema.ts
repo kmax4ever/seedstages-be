@@ -2,18 +2,17 @@ import mongoose from 'mongoose'
 
 export const ProjectSchema = new mongoose.Schema(
   {
-    name: {
+    projectId: {
+      type: String,
+      require: true
+    },
+    projectName: {
       type: String,
       required: true
     },
-    code: {
+    projectCode: {
       type: String,
       required: true
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true
     },
     shortDescription: {
       type: String,
@@ -21,7 +20,7 @@ export const ProjectSchema = new mongoose.Schema(
     },
     fullDescription: {
       type: String,
-      required: true
+      required: false
     },
     website: {
       type: String,
@@ -41,11 +40,11 @@ export const ProjectSchema = new mongoose.Schema(
     },
     logo: {
       type: String,
-      required: true
+      required: false
     },
     banner: {
       type: String,
-      required: true
+      required: false
     }
   },
   {

@@ -25,12 +25,12 @@ export class SyncHandleService implements OnModuleInit {
     for (const i of this.abis) {
       if (i.type == 'event') {
         const signature = this.web3Default.eth.abi.encodeEventSignature(i)
-        if (EVENTS[signature.toLowerCase()]) {
-          this.mapTopicsAbi[signature] = i
-        }
+        // if (EVENTS[signature.toLowerCase()]) {
+        this.mapTopicsAbi[signature] = i
+        //}
       }
     }
-    //console.log(this.mapTopicsAbi)
+    console.log(this.mapTopicsAbi)
   }
 
   async getLogs(from: number, to: number, address: [], topics = []) {

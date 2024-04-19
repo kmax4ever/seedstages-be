@@ -3,39 +3,55 @@ import { RoundType } from './dto/general.dto'
 
 export const SeedstageRoundSchema = new mongoose.Schema(
   {
-    seedstage: {
+    seedStageAddress: {
       type: String,
-      ref: 'Seedstage',
-      required: true
+      required: true,
+      lowercase: true
     },
     name: {
       type: String,
-      required: true
+      required: false
     },
     roundType: {
       type: String,
       enum: RoundType,
-      required: true
+      required: false
+    },
+    roundId: {
+      type: String,
+      required: false
+    },
+    isWhitelistRound: {
+      type: Boolean,
+      required: false
     },
     allowcation: {
-      type: Number,
-      required: true
+      type: String,
+      required: false
     },
-    minAllowcation: {
-      type: Number,
-      required: true
+    minAllocationPerAddress: {
+      type: String,
+      required: false
     },
-    maxAllowcation: {
-      type: Number,
-      required: true
+    maxAllocationPerAddress: {
+      type: String,
+      required: false
     },
     startTime: {
       type: Date,
-      required: true
+      required: false
     },
     endTime: {
       type: Date,
-      required: true
+      required: false
+    },
+    raisedAmount: {
+      type: String,
+      required: false
+    },
+    merkleRoot: {
+      type: String,
+      required: false
     }
   },
   {

@@ -35,33 +35,33 @@ export class AdminCmsController {
     return this.adminCmsService.login(loginData)
   }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
-  @Post('projects')
-  async createProject(@Body() createProjectDto: CreateProjectDto) {
-    return this.adminCmsService.createProject(createProjectDto)
-  }
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // // @UseGuards(JwtUserAuthGuard)
+  // @Post('projects')
+  // async createProject(@Body() createProjectDto: CreateProjectDto) {
+  //   return this.adminCmsService.createProject(createProjectDto)
+  // }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
-  @Post('iou-tokens')
-  async createIouToken(@Body() createIouTokenDto: CreateIouTokenDto) {
-    return this.adminCmsService.createIouToken(createIouTokenDto)
-  }
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // // @UseGuards(JwtUserAuthGuard)
+  // @Post('iou-tokens')
+  // async createIouToken(@Body() createIouTokenDto: CreateIouTokenDto) {
+  //   return this.adminCmsService.createIouToken(createIouTokenDto)
+  // }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
-  @Post('seedstages')
-  async createSeedstages(@Body() createSeedstageDto: CreateSeedstageDto) {
-    return this.adminCmsService.createSeedstage(createSeedstageDto)
-  }
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // // @UseGuards(JwtUserAuthGuard)
+  // @Post('seedstages')
+  // async createSeedstages(@Body() createSeedstageDto: CreateSeedstageDto) {
+  //   return this.adminCmsService.createSeedstage(createSeedstageDto)
+  // }
 
-  @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
-  @Post('seedstage-rounds')
-  async createSeedstageRounds(
-    @Body() createStageRoundDto: CreateStageRoundDto
-  ) {
-    return this.adminCmsService.creatStageRound(createStageRoundDto)
-  }
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // // @UseGuards(JwtUserAuthGuard)
+  // @Post('seedstage-rounds')
+  // async createSeedstageRounds(
+  //   @Body() createStageRoundDto: CreateStageRoundDto
+  // ) {
+  //   return this.adminCmsService.creatStageRound(createStageRoundDto)
+  // }
 }

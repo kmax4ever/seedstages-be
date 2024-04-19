@@ -15,7 +15,11 @@ import { SyncStatusService } from '@/modules/resources/sync-status/sync-status.s
 import { SyncHandleService } from './syncHandle.service'
 import { waitMs } from '@/utils/helper'
 import { CONTRACT_NEED_SYNC, ZERO_ADDRESS } from '@/config/constanst'
-
+import { ProjectsService } from '@/modules/resources/projects/projects.service'
+import { IouTokensService } from '@/modules/resources/iou-token/iou-token.service'
+import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.service'
+import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
+var CONTRACT_SYNC = CONTRACT_NEED_SYNC
 @Injectable()
 export class EthersService implements OnModuleInit {
   private lastBlockSynced: number
@@ -26,7 +30,11 @@ export class EthersService implements OnModuleInit {
   constructor(
     private readonly configService: ConfigService,
     private readonly syncStatusService: SyncStatusService,
-    private readonly syncHandleService: SyncHandleService
+    private readonly syncHandleService: SyncHandleService,
+    private readonly projectsService: ProjectsService,
+    private readonly iouTokensService: IouTokensService,
+    private readonly seedstagesService: SeedstagesService,
+    private readonly seedstageRoundsService: SeedstageRoundsService
   ) {}
 
   async onModuleInit() {
@@ -46,6 +54,8 @@ export class EthersService implements OnModuleInit {
     } else {
       this.lastBlockSynced = this.inititalBlockNum
     }
+    const seedstages = await this.seedstagesService.getSeedStageAddres()
+    CONTRACT_SYNC.push(...seedstages)
   }
   async start() {
     console.log(`initializing...`)
@@ -88,7 +98,7 @@ export class EthersService implements OnModuleInit {
         return
       }
 
-      await this._processLogs(fromBlock, toBlock)
+      await this._processLogs(fromBlock, toBlock, CONTRACT_SYNC)
       await this.syncStatusService.updateLastBlock(toBlock, this.version)
 
       this.lastBlockSynced = toBlock
@@ -97,29 +107,17 @@ export class EthersService implements OnModuleInit {
     }
   }
 
-  private async _processLogs(fromBlock, toBlock, isSyncBack = false) {
+  private async _processLogs(fromBlock, toBlock, CONTRACT_SYNC = []) {
+    console.log(CONTRACT_SYNC)
     console.log(
-      `${
-        isSyncBack ? '[SYNC OLD EVENTS]' : '[SYNC NEW EVENTS]'
-      } get events from block ${fromBlock} to block ${toBlock}`
+      `${'[SYNC EVENTS]'} get events from block ${fromBlock} to block ${toBlock}`
     )
 
     let logs = await this.syncHandleService.getLogs(
       fromBlock,
       toBlock,
-      CONTRACT_NEED_SYNC as any
+      CONTRACT_SYNC as any
     )
-
-    if (isSyncBack) {
-      const blocksSynced = await this.syncStatusService.getBlocks(
-        fromBlock,
-        toBlock
-      )
-      const blocks = blocksSynced.map((i) => i.blockNumber)
-      if (blocks.length > 0) {
-        logs = logs.filter((i) => blocks.indexOf(i.blockNumber) == -1)
-      }
-    }
 
     logs.sort((a: any, b: any) => {
       if (a.blockNumber === b.blockNumber) {
@@ -137,12 +135,46 @@ export class EthersService implements OnModuleInit {
   private async _processEvent(events) {
     for (const event of events) {
       console.log(`xxx event `, event.event)
-
       switch (event.event) {
-        case 'Event':
+        case 'ProjectCreated':
+          await this._handleProjectCreated(event)
+          break
+        case 'SeedStageCreated':
+          await this._handleSeedStageCreated(event)
+          break
+        case 'RoundCreated':
+          await this._handleRoundCreated(event)
+          break
+        case 'TokenCreated':
+          await this._handleTokenCreated(event)
+          break
+        case 'UserDeposited':
+          await this._handleUserDeposited(event)
           break
       }
     }
+  }
+
+  private async _handleProjectCreated(event) {
+    await this.projectsService.createProject(event.data)
+  }
+  private async _handleSeedStageCreated(event) {
+    const { seedStageAddress } = event.data
+    await this.seedstagesService.createSeedstage(event.data)
+    CONTRACT_SYNC.push(seedStageAddress)
+  }
+  private async _handleRoundCreated(event) {
+    const seedStageAddress = event.address
+    await this.seedstageRoundsService.createStageRound({
+      seedStageAddress,
+      ...event.data
+    })
+  }
+  private async _handleTokenCreated(event) {
+    await this.iouTokensService.create(event.data)
+  }
+  private async _handleUserDeposited(event) {
+    console.log(event)
   }
 
   async verifyAddress(address: string) {

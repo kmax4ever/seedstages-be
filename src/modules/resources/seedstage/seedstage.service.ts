@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateSeedstageDto, GetStagesDto } from './dto/request.dto'
+import {
+  CreateSeedstageDto,
+  GetStagesDto,
+  UpdateSeedStageDto
+} from './dto/request.dto'
 import { pick } from 'lodash'
 import { Seedstage } from './seedstage.interface'
 
@@ -77,11 +81,24 @@ export class SeedstagesService {
     return this.seedstageModel.create(
       pick(
         createSeedstageDto,
-        'project',
-        'name',
+        'projectId',
         'iouToken',
-        'stageContractAddress'
+        'depositToken',
+        'seedStageAddress',
+        'multiSigAddress'
       )
+    )
+  }
+
+  async getSeedStageAddres() {
+    const seedstages = await this.seedstageModel.find()
+    return seedstages.map((i) => i.seedStageAddress)
+  }
+
+  async udpate(address: string, updateDto: UpdateSeedStageDto) {
+    return this.seedstageModel.findOneAndUpdate(
+      { address },
+      pick(updateDto, 'name', 'status')
     )
   }
 }

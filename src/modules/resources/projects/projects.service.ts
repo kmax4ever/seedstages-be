@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateProjectDto, GetProjectsDto } from './dto/request.dto'
+import { UpdateProjectDto, GetProjectsDto } from './dto/request.dto'
 import { pick } from 'lodash'
 import { Project } from './projects.interface'
+import { CreateProjectDto } from '@/modules/aggregators/admin-cms/dto/request.dto'
 
 @Injectable()
 export class ProjectsService {
@@ -63,10 +64,17 @@ export class ProjectsService {
 
   async createProject(createProjectDto: CreateProjectDto) {
     return this.projectModel.create(
+      pick(createProjectDto, 'projectId', 'projectName', 'projectCode')
+    )
+  }
+
+  async updateProject(projectId: string, updateDto: UpdateProjectDto) {
+    return this.projectModel.findOneAndUpdate(
+      {
+        projectId
+      },
       pick(
-        createProjectDto,
-        'name',
-        'slug',
+        updateDto,
         'shortDescription',
         'fullDescription',
         'website',

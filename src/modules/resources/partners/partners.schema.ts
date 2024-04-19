@@ -5,7 +5,8 @@ export const PartnerSchema = new mongoose.Schema(
     walletAddress: {
       type: String,
       unique: true,
-      required: true
+      required: true,
+      lowercase: true
     },
     username: {
       type: String,
