@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import {
   CmsCreateIouTokenDto,
   CmsCreateStageRoundDto,
+  CmsSetTokenAdmin,
   CreateProjectDto,
   CreateStageRoundDto,
   LoginDto
@@ -41,7 +42,6 @@ export class AdminCmsService {
       createProjectDto.projectName,
       createProjectDto.projectCode
     )
-    console.log(txhash)
     if (!txhash) {
       throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
     }
@@ -50,7 +50,6 @@ export class AdminCmsService {
   //TODO REMOVE WHEN HAS CMS FE
   async createSeedStage(createSeedStageDto: CreateSeedstageDto) {
     const txhash = await this.ethersService.createSeedStage(createSeedStageDto)
-    console.log(txhash)
     if (!txhash) {
       throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
     }
@@ -59,7 +58,6 @@ export class AdminCmsService {
   //TODO REMOVE WHEN HAS CMS FE
   async createIouToken(createDto: CmsCreateIouTokenDto) {
     const txhash = await this.ethersService.createIouToken(createDto)
-    console.log(txhash)
     if (!txhash) {
       throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
     }
@@ -69,7 +67,23 @@ export class AdminCmsService {
   //TODO REMOVE WHEN HAS CMS FE
   async createRound(createDto: CmsCreateStageRoundDto) {
     const txhash = await this.ethersService.createRound(createDto)
-    console.log(txhash)
+    if (!txhash) {
+      throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
+    }
+    return txhash
+  }
+
+  //TODO REMOVE WHEN HAS CMS FE
+  async getTokens() {
+    return await this.ethersService.getIOUToken()
+  }
+
+  //TODO REMOVE WHEN HAS CMS FE
+  async setAdmin(setAdminDto: CmsSetTokenAdmin) {
+    const txhash = await this.ethersService.setTokenAdmin(
+      setAdminDto.tokenAddress,
+      setAdminDto.seedStageAddress
+    )
     if (!txhash) {
       throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
     }

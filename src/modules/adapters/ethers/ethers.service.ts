@@ -4,7 +4,8 @@ import {
   ReDAOIOUTokenFactory__factory,
   ReDAOSeedStageFactory__factory,
   ReDAOSeedStage__factory,
-  Erc721__factory
+  Erc721__factory,
+  ReDAOIOUToken__factory
 } from '@/types'
 import { Injectable, OnModuleInit } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -21,6 +22,7 @@ import { SyncHandleService } from './syncHandle.service'
 import { waitMs } from '@/utils/helper'
 import { CONTRACT_NEED_SYNC, ZERO_ADDRESS } from '@/config/constanst'
 import SeedStageFactory from '../../../abis/ReDAOSeedStageFactory.json'
+import RedaoIOUTokenJson from '../../../abis/ReDAOIOUToken.json'
 import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
 import { CreateTokenDto } from '@/modules/resources/deposit-token/dto/request.dto'
 import {
@@ -133,6 +135,13 @@ export class EthersService {
     return ReDAOSeedStage__factory.connect(seedstageAddress, this.provider)
   }
 
+  public getIouTokenContract(address: string) {
+    return ReDAOIOUToken__factory.connect(address, this.provider)
+    // return new ethers.Contract(address, RedaoIOUTokenJson).connect(
+    //   this.provider
+    // )
+  }
+
   //TODO // remove when have cms fe
   async createProject(projectName: string, projectCode: string) {
     const params = [projectName, projectCode]
@@ -169,6 +178,7 @@ export class EthersService {
     return await this._sendTx(params, fucName, seedStageFactory, to)
   }
 
+  //TODO // remove when have cms fe
   async createRound(createRound: CmsCreateStageRoundDto) {
     const params = [
       createRound.isWhitelistRound,
@@ -185,6 +195,19 @@ export class EthersService {
     )
     const fucName = 'setRoundDetails'
     return await this._sendTx(params, fucName, seedStageFactory, to)
+  }
+
+  async setTokenAdmin(tokenAddress: string, seedStageAddress: string) {
+    const params = [seedStageAddress, true]
+    const to = tokenAddress
+    const token = this.getIouTokenContract(tokenAddress)
+    const fucName = 'setAdmin'
+    return await this._sendTx(params, fucName, token, to)
+  }
+
+  async getIOUToken() {
+    const token = this.getTokenFactory()
+    return await token.getIOUTokens(1)
   }
 
   private async _sendTx(params, fucName, contract, to) {

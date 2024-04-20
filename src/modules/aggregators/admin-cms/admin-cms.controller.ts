@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
 import {
   CmsCreateIouTokenDto,
   CmsCreateStageRoundDto,
+  CmsSetTokenAdmin,
   CreateProjectDto,
   CreateStageRoundDto,
   LoginDto
@@ -58,6 +59,16 @@ export class AdminCmsController {
   @Post('temp/createRound')
   async createRound(@Body() createDto: CmsCreateStageRoundDto) {
     return this.adminCmsService.createRound(createDto)
+  }
+
+  @Post('temp/getTokens')
+  async getTokens() {
+    return this.adminCmsService.getTokens()
+  }
+
+  @Post('temp/setAmin')
+  async setAdmin(@Body() createDto: CmsSetTokenAdmin) {
+    return this.adminCmsService.setAdmin(createDto)
   }
   // @UsePipes(new ValidationPipe({ transform: true }))
   // // @UseGuards(JwtUserAuthGuard)

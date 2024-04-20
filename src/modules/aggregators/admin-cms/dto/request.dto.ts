@@ -171,3 +171,15 @@ export class CmsCreateStageRoundDto {
   @IsNotEmpty()
   merkleRoot: string
 }
+
+export class CmsSetTokenAdmin {
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  tokenAddress: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  seedStageAddress: string
+}

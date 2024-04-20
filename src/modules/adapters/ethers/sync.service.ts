@@ -11,6 +11,7 @@ import { IouTokensService } from '@/modules/resources/iou-token/iou-token.servic
 import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.service'
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
 import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
+import { EthersService } from './ethers.service'
 
 var CONTRACT_SYNC = CONTRACT_NEED_SYNC
 @Injectable()
@@ -28,7 +29,8 @@ export class SyncService implements OnModuleInit {
     private readonly iouTokensService: IouTokensService,
     private readonly seedstagesService: SeedstagesService,
     private readonly seedstageRoundsService: SeedstageRoundsService,
-    private readonly depositHistorysService: DepositHistorysService
+    private readonly depositHistorysService: DepositHistorysService,
+    private readonly ethersService: EthersService
   ) {}
 
   async onModuleInit() {
@@ -102,28 +104,33 @@ export class SyncService implements OnModuleInit {
   }
 
   private async _processLogs(fromBlock, toBlock, CONTRACT_SYNC = []) {
-    console.log(CONTRACT_SYNC)
-    console.log(
-      `${'[SYNC EVENTS]'} get events from block ${fromBlock} to block ${toBlock}`
-    )
+    try {
+      console.log(CONTRACT_SYNC)
+      console.log(
+        `${'[SYNC EVENTS]'} get events from block ${fromBlock} to block ${toBlock}`
+      )
 
-    let logs = await this.syncHandleService.getLogs(
-      fromBlock,
-      toBlock,
-      CONTRACT_SYNC as any
-    )
+      let logs = await this.syncHandleService.getLogs(
+        fromBlock,
+        toBlock,
+        CONTRACT_SYNC as any
+      )
 
-    logs.sort((a: any, b: any) => {
-      if (a.blockNumber === b.blockNumber) {
-        return a.logIndex - b.logIndex
-      } else {
-        return a.blockNumber - b.blockNumber
-      }
-    })
+      logs.sort((a: any, b: any) => {
+        if (a.blockNumber === b.blockNumber) {
+          return a.logIndex - b.logIndex
+        } else {
+          return a.blockNumber - b.blockNumber
+        }
+      })
 
-    const events = this.syncHandleService.processLog(logs)
-    await this._processEvent(events)
-    await this.syncHandleService.saveBlock(logs)
+      const events = this.syncHandleService.processLog(logs)
+      await this._processEvent(events)
+      await this.syncHandleService.saveBlock(logs)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 
   private async _processEvent(events) {
@@ -159,17 +166,28 @@ export class SyncService implements OnModuleInit {
     await this.projectsService.createProject(event.data)
   }
   private async _handleUpdateSeedStage(event) {
-    console.log(event)
     const seedStageAddress = event.address.toLowerCase()
     await this.seedstagesService.update(seedStageAddress, event.data)
-    //TODO : set admin iou token for seedStageAddress
+    if (event.event === `UpdateIouToken`) {
+      const { iouToken } = event.data
+      const tx = await this.ethersService.setTokenAdmin(
+        iouToken,
+        seedStageAddress
+      )
+      console.log('set admin', tx)
+    }
   }
   private async _handleSeedStageCreated(event) {
-    const { seedStageAddress } = event.data
+    const { seedStageAddress, iouToken } = event.data
     await this.seedstagesService.createSeedstage(event.data)
     CONTRACT_SYNC.push(seedStageAddress)
 
     //TODO : set admin iou token for seedStageAddress
+    const tx = await this.ethersService.setTokenAdmin(
+      iouToken,
+      seedStageAddress
+    )
+    console.log('set admin', tx)
   }
   private async _handleRoundCreated(event) {
     const seedStageAddress = event.address
