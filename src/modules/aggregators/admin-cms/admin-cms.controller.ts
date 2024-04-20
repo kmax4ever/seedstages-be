@@ -10,7 +10,8 @@ import {
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
 import {
-  CreateIouTokenDto,
+  CmsCreateIouTokenDto,
+  CmsCreateStageRoundDto,
   CreateProjectDto,
   CreateStageRoundDto,
   LoginDto
@@ -37,7 +38,7 @@ export class AdminCmsController {
   //TODO remove when have cms ui
   @UsePipes(new ValidationPipe({ transform: true }))
   // @UseGuards(JwtUserAuthGuard)
-  @Post('projects')
+  @Post('temp/projects')
   async createProject(@Body() createProjectDto: CreateProjectDto) {
     return this.adminCmsService.createProject(createProjectDto)
   }
@@ -45,11 +46,19 @@ export class AdminCmsController {
   //TODO remove when have cms ui
   @UsePipes(new ValidationPipe({ transform: true }))
   // @UseGuards(JwtUserAuthGuard)
-  @Post('seedStage')
+  @Post('temp/seedStage')
   async createSeedStage(@Body() createDto: CreateSeedstageDto) {
     return this.adminCmsService.createSeedStage(createDto)
   }
-
+  //TODO remove when have cms ui
+  @Post('temp/createIouToken')
+  async createIouToken(@Body() createDto: CmsCreateIouTokenDto) {
+    return this.adminCmsService.createIouToken(createDto)
+  }
+  @Post('temp/createRound')
+  async createRound(@Body() createDto: CmsCreateStageRoundDto) {
+    return this.adminCmsService.createRound(createDto)
+  }
   // @UsePipes(new ValidationPipe({ transform: true }))
   // // @UseGuards(JwtUserAuthGuard)
   // @Post('iou-tokens')

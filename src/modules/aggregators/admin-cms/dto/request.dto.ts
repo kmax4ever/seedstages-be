@@ -45,12 +45,11 @@ export class CreateProjectDto {
   projectCode: string
 }
 
-export class CreateIouTokenDto {
+export class CmsCreateIouTokenDto {
   @ApiProperty({ type: String, required: true })
-  @IsMongoId()
   @IsString()
   @IsNotEmpty()
-  project: string
+  projectId: string
 
   @ApiProperty({ type: String, required: true })
   @IsString()
@@ -61,27 +60,6 @@ export class CreateIouTokenDto {
   @IsString()
   @IsNotEmpty()
   symbol: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  tokenAddress: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsUrl()
-  @IsNotEmpty()
-  logo: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  ownerAddress: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  description: string
 }
 
 export class CreateStageRoundDto {
@@ -152,4 +130,44 @@ export class UpdateSeedStageRoundDto {
   @IsNotEmpty()
   @IsEnum(RoundType)
   roundType: string
+}
+
+export class CmsCreateStageRoundDto {
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  seedStageAddress: string
+  @ApiProperty({ type: Boolean, required: true })
+  @IsNotEmpty()
+  isWhitelistRound: boolean
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  allocation: string
+
+  @ApiProperty({ type: Number, required: true })
+  @IsNumber()
+  @IsNotEmpty()
+  startTime: number
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  minAllocationPerAddress: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  maxAllocationPerAddress: string
+
+  @ApiProperty({ type: Number, required: true })
+  @IsNumber()
+  @IsNotEmpty()
+  endTime: number
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  merkleRoot: string
 }

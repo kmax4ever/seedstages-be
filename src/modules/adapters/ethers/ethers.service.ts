@@ -22,6 +22,12 @@ import { waitMs } from '@/utils/helper'
 import { CONTRACT_NEED_SYNC, ZERO_ADDRESS } from '@/config/constanst'
 import SeedStageFactory from '../../../abis/ReDAOSeedStageFactory.json'
 import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
+import { CreateTokenDto } from '@/modules/resources/deposit-token/dto/request.dto'
+import {
+  CmsCreateIouTokenDto,
+  CmsCreateStageRoundDto,
+  CreateStageRoundDto
+} from '@/modules/aggregators/admin-cms/dto/request.dto'
 require('dotenv').config()
 @Injectable()
 export class EthersService {
@@ -117,10 +123,14 @@ export class EthersService {
     //   SeedStageFactory
     // ).connect(this.provider)
 
-    return ReDAOSeedStageFactory__factory.connect(
+    return ReDAOIOUTokenFactory__factory.connect(
       process.env.TOKEN_FACTORY_CONTRACT as string,
       this.provider
     )
+  }
+
+  public getSeedStageContract(seedstageAddress: string) {
+    return ReDAOSeedStage__factory.connect(seedstageAddress, this.provider)
   }
 
   //TODO // remove when have cms fe
@@ -140,11 +150,40 @@ export class EthersService {
       createSeedStage.iouToken,
       createSeedStage.depositToken
     ]
-    console.log(params)
-
     const to = process.env.SEEDSTAGE_FACTORY_CONTRACT
     const seedStageFactory = this.getRedaoSeedStageFactory()
     const fucName = 'createReDAOSeedStage'
+    return await this._sendTx(params, fucName, seedStageFactory, to)
+  }
+
+  //TODO // remove when have cms fe
+  async createIouToken(createTokenDto: CmsCreateIouTokenDto) {
+    const params = [
+      createTokenDto.projectId,
+      createTokenDto.name,
+      createTokenDto.symbol
+    ]
+    const to = process.env.TOKEN_FACTORY_CONTRACT
+    const seedStageFactory = this.getTokenFactory()
+    const fucName = 'createReDAOIOUToken'
+    return await this._sendTx(params, fucName, seedStageFactory, to)
+  }
+
+  async createRound(createRound: CmsCreateStageRoundDto) {
+    const params = [
+      createRound.isWhitelistRound,
+      createRound.allocation,
+      createRound.minAllocationPerAddress,
+      createRound.maxAllocationPerAddress,
+      +createRound.startTime,
+      +createRound.endTime,
+      createRound.merkleRoot
+    ]
+    const to = createRound.seedStageAddress
+    const seedStageFactory = this.getSeedStageContract(
+      createRound.seedStageAddress
+    )
+    const fucName = 'setRoundDetails'
     return await this._sendTx(params, fucName, seedStageFactory, to)
   }
 
@@ -171,7 +210,6 @@ export class EthersService {
 
       tx['gasLimit'] = gasLimit
       tx['gasPrice'] = feeData.gasPrice
-      console.log({ gasLimit: gasLimit.toString() })
 
       const txn = await wallet.sendTransaction(tx)
       await txn.wait()
