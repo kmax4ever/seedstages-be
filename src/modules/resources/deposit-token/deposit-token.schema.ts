@@ -2,10 +2,6 @@ import mongoose from 'mongoose'
 
 export const IouTokenSchema = new mongoose.Schema(
   {
-    projectId: {
-      type: String,
-      required: true
-    },
     name: {
       type: String,
       required: true
@@ -19,14 +15,13 @@ export const IouTokenSchema = new mongoose.Schema(
       required: true,
       lowercase: true
     },
+    decimals: {
+      type: String,
+      required: true
+    },
     logo: {
       type: String,
       required: false
-    },
-    owner: {
-      type: String,
-      required: false,
-      lowercase: true
     },
     description: {
       type: String,

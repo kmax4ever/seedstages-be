@@ -25,11 +25,6 @@ export class CreateTokenDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
-  projectId: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
   name: string
 
   @ApiProperty({ type: String, required: true })
@@ -42,7 +37,7 @@ export class CreateTokenDto {
   tokenAddress: string
 
   @ApiProperty({ type: String, required: true })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  owner: string
+  decimals: string
 }

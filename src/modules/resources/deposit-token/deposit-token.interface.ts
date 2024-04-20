@@ -1,12 +1,11 @@
 import { Document } from 'mongoose'
 
-export interface IouToken extends Document {
+export interface DepositToken extends Document {
   id: string
-  project: string
   name: string
   symbol: string
+  decimals: string
   tokenAddress: string
   logo: string
-  ownerAddress: string
   description: string
 }
