@@ -29,25 +29,22 @@ export class CreateSeedstageDto {
   projectId: string
 
   @ApiProperty({ type: String, required: true })
-  @IsMongoId()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   iouToken: string
 
   @ApiProperty({ type: String, required: true })
-  @IsMongoId()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   depositToken: string
 
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  seedStageAddress: string
+  // @ApiProperty({ type: String, required: false })
+  // @IsNotEmpty()
+  // seedStageAddress: string
 
   @ApiProperty({ type: String, required: true })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   multiSigAddress: string
 }
 

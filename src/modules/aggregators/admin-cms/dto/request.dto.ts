@@ -36,12 +36,6 @@ export class CreateProjectDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  projectId: string
-
-  @ApiProperty({ type: String, required: false })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
   projectName: string
 
   @ApiProperty({ type: String, required: false })
@@ -49,31 +43,6 @@ export class CreateProjectDto {
   @IsString()
   @IsNotEmpty()
   projectCode: string
-}
-
-export class CreateSeedstageDto {
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsMongoId()
-  @IsNotEmpty()
-  projectId: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsMongoId()
-  @IsString()
-  @IsNotEmpty()
-  iouToken: string
-
-  @ApiProperty({ type: String, required: true, enum: StageStatus })
-  @IsString()
-  @IsEnum(StageStatus)
-  @IsNotEmpty()
-  status: string
-
-  @ApiProperty({ type: String, required: true })
-  @IsString()
-  @IsNotEmpty()
-  stageContractAddress: string
 }
 
 export class CreateIouTokenDto {

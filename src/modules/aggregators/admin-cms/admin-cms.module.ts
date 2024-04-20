@@ -10,6 +10,7 @@ import { IouTokensModule } from '@/modules/resources/iou-token/iou-token.module'
 import { SeedstagesModule } from '@/modules/resources/seedstage/seedstage.module'
 import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedstage-round.module'
 import { DepositToken } from '@/modules/resources/deposit-token/deposit-token.module'
+import { EthersModule } from '@/modules/adapters/ethers/ethers.module'
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { DepositToken } from '@/modules/resources/deposit-token/deposit-token.mo
     IouTokensModule,
     SeedstagesModule,
     SeedstageRoundModule,
-    DepositToken
+    DepositToken,
+    EthersModule
   ],
   providers: [AdminCmsService],
   controllers: [AdminCmsController]

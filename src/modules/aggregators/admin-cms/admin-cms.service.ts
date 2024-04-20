@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import {
   CreateIouTokenDto,
   CreateProjectDto,
-  CreateSeedstageDto,
   CreateStageRoundDto,
   LoginDto
 } from './dto/request.dto'
@@ -12,6 +11,8 @@ import { ProjectsService } from '@/modules/resources/projects/projects.service'
 import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.service'
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
 import { IouTokensService } from '@/modules/resources/iou-token/iou-token.service'
+import { EthersService } from '@/modules/adapters/ethers/ethers.service'
+import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -21,7 +22,8 @@ export class AdminCmsService {
     private projectsService: ProjectsService,
     private seedstagesService: SeedstagesService,
     private iouTokensService: IouTokensService,
-    private seedstageRoundsService: SeedstageRoundsService
+    private seedstageRoundsService: SeedstageRoundsService,
+    private ethersService: EthersService
   ) {}
 
   async login(loginData: LoginDto) {
@@ -33,9 +35,25 @@ export class AdminCmsService {
     return this.authService.generateUserAccessToken(cmsUser)
   }
 
-  // async createProject(createProjectDto: CreateProjectDto) {
-  //   return this.projectsService.createProject(createProjectDto)
-  // }
+  async createProject(createProjectDto: CreateProjectDto) {
+    const txhash = await this.ethersService.createProject(
+      createProjectDto.projectName,
+      createProjectDto.projectCode
+    )
+    console.log(txhash)
+    if (!txhash) {
+      throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
+    }
+    return txhash
+  }
+  async createSeedStage(createSeedStageDto: CreateSeedstageDto) {
+    const txhash = await this.ethersService.createSeedStage(createSeedStageDto)
+    console.log(txhash)
+    if (!txhash) {
+      throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
+    }
+    return txhash
+  }
 
   // async createSeedstage(createSeedstageDto: CreateSeedstageDto) {
   //   const project = await this.projectsService.getProjectById(

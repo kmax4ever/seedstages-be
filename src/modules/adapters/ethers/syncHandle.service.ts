@@ -16,7 +16,7 @@ export class SyncHandleService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.web3Default = new Web3(this.configService.get('POLYGON_PROVIDER'))
+    this.web3Default = new Web3(this.configService.get('RPC_ENDPOINT'))
     this.abis = ABIS // list abis
     this.initTopicAbi()
   }

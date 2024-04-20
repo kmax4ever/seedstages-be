@@ -23,9 +23,5 @@ export const EVENTS = {
   '0x9047b5ef06ee8770743e9df378cfdca6ebf2dbdc4cbf3741cccaf2218dc15b90':
     'UpdateIouToken'
 }
-export const ABIS = [
-  ...TokenFactory.abi,
-  ...SeedStage.abi,
-  ...SeedStageFactory.abi
-]
+export const ABIS = [...TokenFactory, ...SeedStage, ...SeedStageFactory]
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
