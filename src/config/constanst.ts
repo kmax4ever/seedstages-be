@@ -17,7 +17,11 @@ export const EVENTS = {
   '0xd739efca570c496acabced1a81089a2530ff692329ab57b3b05ffd5759fb6f15':
     'ProjectCreated',
   '0xe9aacf3b9877a77a1a8990b1f3df54b3cae09888cadb6dbee452fb474325f536':
-    'SeedStageCreated'
+    'SeedStageCreated',
+  '0x5027c199ea59fb0ee1e2bff5f7166d9a7557c5298ae93241fa08d07df4107bc5':
+    'UpdateDepositToken',
+  '0x9047b5ef06ee8770743e9df378cfdca6ebf2dbdc4cbf3741cccaf2218dc15b90':
+    'UpdateIouToken'
 }
 export const ABIS = [
   ...TokenFactory.abi,

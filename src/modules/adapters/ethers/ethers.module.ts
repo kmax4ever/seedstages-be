@@ -6,6 +6,7 @@ import { ProjectsModule } from '@/modules/resources/projects/projects.module'
 import { IouTokensModule } from '@/modules/resources/iou-token/iou-token.module'
 import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedstage-round.module'
 import { SeedstagesModule } from '@/modules/resources/seedstage/seedstage.module'
+import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposit-history.module'
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { SeedstagesModule } from '@/modules/resources/seedstage/seedstage.module
     ProjectsModule,
     IouTokensModule,
     SeedstageRoundModule,
-    SeedstagesModule
+    SeedstagesModule,
+    DepositHistoryModule
   ],
   providers: [EthersService, SyncHandleService],
   exports: [EthersService],

@@ -19,6 +19,7 @@ import { ProjectsService } from '@/modules/resources/projects/projects.service'
 import { IouTokensService } from '@/modules/resources/iou-token/iou-token.service'
 import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.service'
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
+import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
 var CONTRACT_SYNC = CONTRACT_NEED_SYNC
 @Injectable()
 export class EthersService implements OnModuleInit {
@@ -34,7 +35,8 @@ export class EthersService implements OnModuleInit {
     private readonly projectsService: ProjectsService,
     private readonly iouTokensService: IouTokensService,
     private readonly seedstagesService: SeedstagesService,
-    private readonly seedstageRoundsService: SeedstageRoundsService
+    private readonly seedstageRoundsService: SeedstageRoundsService,
+    private readonly depositHistorysService: DepositHistorysService
   ) {}
 
   async onModuleInit() {
@@ -151,6 +153,12 @@ export class EthersService implements OnModuleInit {
         case 'UserDeposited':
           await this._handleUserDeposited(event)
           break
+        case 'UpdateDepositToken':
+          await this._handleUpdateSeedStage(event)
+          break
+        case 'UpdateIouToken':
+          await this._handleUpdateSeedStage(event)
+          break
       }
     }
   }
@@ -158,10 +166,18 @@ export class EthersService implements OnModuleInit {
   private async _handleProjectCreated(event) {
     await this.projectsService.createProject(event.data)
   }
+  private async _handleUpdateSeedStage(event) {
+    console.log(event)
+    const seedStageAddress = event.address.toLowerCase()
+    await this.seedstagesService.update(seedStageAddress, event.data)
+    //TODO : set admin iou token for seedStageAddress
+  }
   private async _handleSeedStageCreated(event) {
     const { seedStageAddress } = event.data
     await this.seedstagesService.createSeedstage(event.data)
     CONTRACT_SYNC.push(seedStageAddress)
+
+    //TODO : set admin iou token for seedStageAddress
   }
   private async _handleRoundCreated(event) {
     const seedStageAddress = event.address
@@ -175,6 +191,11 @@ export class EthersService implements OnModuleInit {
   }
   private async _handleUserDeposited(event) {
     console.log(event)
+    const seedStageAddress = event.address
+    await this.depositHistorysService.create({
+      seedStageAddress,
+      ...event.data
+    })
   }
 
   async verifyAddress(address: string) {

@@ -95,10 +95,16 @@ export class SeedstagesService {
     return seedstages.map((i) => i.seedStageAddress)
   }
 
-  async udpate(address: string, updateDto: UpdateSeedStageDto) {
+  async udpateInfo(seedStageAddress: string, updateDto: UpdateSeedStageDto) {
     return this.seedstageModel.findOneAndUpdate(
-      { address },
+      { seedStageAddress },
       pick(updateDto, 'name', 'status')
+    )
+  }
+  async update(seedStageAddress: string, updateData) {
+    return this.seedstageModel.findOneAndUpdate(
+      { seedStageAddress },
+      updateData
     )
   }
 }
