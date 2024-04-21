@@ -23,6 +23,12 @@ import {
   GetProjectsDto,
   UpdateProjectDto
 } from '@/modules/resources/projects/dto/request.dto'
+import { PaginationQueriesDto } from '@/modules/common/dto/pagination.dto'
+import { DepositTokensService } from '@/modules/resources/deposit-token/deposit-token.service'
+import {
+  CreateDepositTokenDto,
+  UpdateDepositTokenDto
+} from '@/modules/resources/deposit-token/dto/request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -33,7 +39,8 @@ export class AdminCmsService {
     private seedstagesService: SeedstagesService,
     private iouTokensService: IouTokensService,
     private seedstageRoundsService: SeedstageRoundsService,
-    private ethersService: EthersService
+    private ethersService: EthersService,
+    private depositTokensService: DepositTokensService
   ) {}
 
   async login(loginData: LoginDto) {
@@ -154,5 +161,36 @@ export class AdminCmsService {
 
   async getProjects(dto: GetProjectsDto) {
     return this.projectsService.getProjects(dto)
+  }
+
+  async getDepositTokens() {
+    return this.depositTokensService.getList()
+  }
+  async getDepositByAddress(tokenAddress: string) {
+    const token = await this.depositTokensService.getByAddress(tokenAddress)
+    if (!token) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return token
+  }
+  async createDepositToken(createDto: CreateDepositTokenDto) {
+    const token = await this.depositTokensService.getByAddress(
+      createDto.tokenAddress
+    )
+    if (token) {
+      throw new HttpException('Token exists!', HttpStatus.BAD_REQUEST)
+    }
+    return this.depositTokensService.create(createDto)
+  }
+
+  async updateDepositToken(
+    tokenAddress: string,
+    updateDto: UpdateDepositTokenDto
+  ) {
+    const token = await this.depositTokensService.getByAddress(tokenAddress)
+    if (!token) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return this.depositTokensService.update(tokenAddress, updateDto)
   }
 }

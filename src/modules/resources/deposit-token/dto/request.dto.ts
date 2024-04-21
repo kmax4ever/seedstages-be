@@ -8,7 +8,7 @@ import {
   isEthereumAddress
 } from 'class-validator'
 
-export class UpdateTokenDto {
+export class UpdateDepositTokenDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsUrl()
@@ -21,7 +21,7 @@ export class UpdateTokenDto {
   description: string
 }
 
-export class CreateTokenDto {
+export class CreateDepositTokenDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
@@ -40,4 +40,14 @@ export class CreateTokenDto {
   @IsString()
   @IsNotEmpty()
   decimals: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  logo: string
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  description: string
 }

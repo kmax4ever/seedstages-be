@@ -24,7 +24,7 @@ import { CONTRACT_NEED_SYNC, ZERO_ADDRESS } from '@/config/constanst'
 import SeedStageFactory from '../../../abis/ReDAOSeedStageFactory.json'
 import RedaoIOUTokenJson from '../../../abis/ReDAOIOUToken.json'
 import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
-import { CreateTokenDto } from '@/modules/resources/deposit-token/dto/request.dto'
+import { CreateDepositTokenDto } from '@/modules/resources/deposit-token/dto/request.dto'
 import {
   CmsCreateIouTokenDto,
   CmsCreateStageRoundDto,

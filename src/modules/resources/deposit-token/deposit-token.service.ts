@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateTokenDto, UpdateTokenDto } from './dto/request.dto'
+import { CreateDepositTokenDto, UpdateDepositTokenDto } from './dto/request.dto'
 import { pick } from 'lodash'
 import { DepositToken } from './deposit-token.interface'
 
 @Injectable()
-export class IouTokensService {
+export class DepositTokensService {
   constructor(
     @InjectModel('DepositToken') private depositTokenModel: Model<DepositToken>
   ) {}
@@ -15,25 +15,36 @@ export class IouTokensService {
     return this.depositTokenModel.find()
   }
 
-  async get(tokenAddress: string) {
+  async getByAddress(tokenAddress: string) {
     return this.depositTokenModel.findOne({ tokenAddress })
   }
 
-  async update(tokenAddress: string, updateDto: UpdateTokenDto) {
+  async update(tokenAddress: string, updateDto: UpdateDepositTokenDto) {
     return this.depositTokenModel.findOneAndUpdate(
       {
         tokenAddress
       },
-      pick(updateDto, 'logo', 'description')
+      pick(updateDto, 'logo', 'description'),
+      {
+        new: true
+      }
     )
   }
 
-  async create(createDto: CreateTokenDto) {
+  async create(createDto: CreateDepositTokenDto) {
     return this.depositTokenModel.findOneAndUpdate(
       {
         tokenAddress: createDto.tokenAddress
       },
-      pick(createDto, 'tokenAddress', 'name', 'symbol', 'decimals'),
+      pick(
+        createDto,
+        'tokenAddress',
+        'name',
+        'symbol',
+        'decimals',
+        'logo',
+        'description'
+      ),
       { upsert: true }
     )
   }

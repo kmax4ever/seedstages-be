@@ -33,6 +33,10 @@ import {
   GetProjectsDto,
   UpdateProjectDto
 } from '@/modules/resources/projects/dto/request.dto'
+import {
+  CreateDepositTokenDto,
+  UpdateDepositTokenDto
+} from '@/modules/resources/deposit-token/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -121,11 +125,48 @@ export class AdminCmsController {
     return await this.adminCmsService.getProjectById(projectId)
   }
 
-  //@UseGuards(JwtUserAuthGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   //@UseGuards(JwtUserAuthGuard)
   @Get('projects')
   async getProjects(@Request() req: any, @Query() query: GetProjectsDto) {
     return await this.adminCmsService.getProjects(query)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('deposit-token')
+  async getListDepositTokens(@Request() req: any) {
+    return await this.adminCmsService.getDepositTokens()
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('deposit-token/:tokenAddress')
+  async getDepositTokenByAddress(
+    @Request() req: any,
+    @Param('tokenAddress') tokenAddress: string
+  ) {
+    return await this.adminCmsService.getDepositByAddress(tokenAddress)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Post('deposit-token')
+  async createDepositToken(
+    @Request() req: any,
+    @Body() body: CreateDepositTokenDto
+  ) {
+    return await this.adminCmsService.createDepositToken(body)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Patch('deposit-token/:tokenAddress')
+  async updateDepositToken(
+    @Request() req: any,
+    @Param('tokenAddress') tokenAddress: string,
+    @Body() body: UpdateDepositTokenDto
+  ) {
+    return await this.adminCmsService.updateDepositToken(tokenAddress, body)
   }
 }

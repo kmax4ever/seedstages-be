@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { IouTokenSchema } from './deposit-token.schema'
-import { IouTokensService } from './deposit-token.service'
+import { DepositTokensService } from './deposit-token.service'
 
 @Module({
   imports: [
@@ -9,8 +9,8 @@ import { IouTokensService } from './deposit-token.service'
       { name: 'DepositToken', schema: IouTokenSchema }
     ])
   ],
-  providers: [IouTokensService],
-  exports: [IouTokensService],
+  providers: [DepositTokensService],
+  exports: [DepositTokensService],
   controllers: []
 })
 export class DepositToken {}
