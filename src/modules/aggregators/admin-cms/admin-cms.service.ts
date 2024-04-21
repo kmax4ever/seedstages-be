@@ -17,6 +17,7 @@ import { IouTokensService } from '@/modules/resources/iou-token/iou-token.servic
 import { EthersService } from '@/modules/adapters/ethers/ethers.service'
 import {
   CreateSeedstageDto,
+  GetStagesDto,
   UpdateSeedStageDto
 } from '@/modules/resources/seedstage/dto/request.dto'
 import {
@@ -213,5 +214,19 @@ export class AdminCmsService {
       throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
     }
     return await this.iouTokensService.updateIouToken(tokenAddress, updateDto)
+  }
+
+  async getSeedstage(seedStageAddress: string) {
+    const seedStage = await this.seedstagesService.getStageById(
+      seedStageAddress
+    )
+    if (!seedStage) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return seedStage
+  }
+
+  async getSeedStageByProjectid(searchDto: GetStagesDto) {
+    return await this.seedstagesService.getStages(searchDto)
   }
 }

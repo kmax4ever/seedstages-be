@@ -19,7 +19,8 @@ export class SeedstagesService {
     return this.seedstageModel
       .findOne({ seedStageAddress })
       .populate('project')
-      .populate('iouToken')
+      .populate('iouTokenInfo')
+      .populate('depositTokenInfo')
       .lean()
   }
 
@@ -35,7 +36,7 @@ export class SeedstagesService {
       }
     }
 
-    const queries = {}
+    const queries = { projectId: getStagesDto.projectId }
 
     let searches = []
     if (getStagesDto.search) {
@@ -59,7 +60,8 @@ export class SeedstagesService {
     const assets = await this.seedstageModel
       .find(queries, null, options)
       .populate('project')
-      .populate('iouToken')
+      .populate('iouTokenInfo')
+      .populate('depositTokenInfo')
     const total = await this.seedstageModel.countDocuments(queries)
 
     return {

@@ -25,16 +25,3 @@ export class VerifyNonceDto {
   @IsNotEmpty()
   address: string
 }
-
-export class GetStagesDto extends PaginationQueriesDto {
-  @ApiProperty({ type: String, required: false, default: '' })
-  @IsOptional()
-  @IsString()
-  search: string
-
-  @ApiProperty({ type: String, required: false, enum: StageStatus })
-  @IsOptional()
-  @IsString()
-  @IsEnum(StageStatus)
-  status: string
-}

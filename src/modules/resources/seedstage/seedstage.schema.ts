@@ -59,3 +59,17 @@ SeedstageSchema.virtual('project', {
   options: {},
   justOne: true
 })
+SeedstageSchema.virtual('iouTokenInfo', {
+  ref: `IouToken`,
+  localField: 'iouToken',
+  foreignField: 'tokenAddress',
+  options: {},
+  justOne: true
+})
+SeedstageSchema.virtual('depositTokenInfo', {
+  ref: `DepositToken`,
+  localField: 'depositToken',
+  foreignField: 'tokenAddress',
+  options: {},
+  justOne: true
+})

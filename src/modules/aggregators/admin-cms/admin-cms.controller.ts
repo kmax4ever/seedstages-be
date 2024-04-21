@@ -27,6 +27,7 @@ import { LoginResponse } from './dto/response.dto'
 import { AdminCmsService } from './admin-cms.service'
 import {
   CreateSeedstageDto,
+  GetStagesDto,
   UpdateSeedStageDto
 } from '@/modules/resources/seedstage/dto/request.dto'
 import {
@@ -38,6 +39,7 @@ import {
   UpdateDepositTokenDto
 } from '@/modules/resources/deposit-token/dto/request.dto'
 import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
+import { query } from 'express'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -100,6 +102,18 @@ export class AdminCmsController {
       seedStageAddress,
       updateDto
     )
+  }
+
+  @Get('seedStage/:seedStageAddress')
+  async getSeedStage(@Param('seedStageAddress') seedStageAddress: string) {
+    return await this.adminCmsService.getSeedstage(seedStageAddress)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('seedStagesByProjectId')
+  async getSeedStages(@Request() req: any, @Query() query: GetStagesDto) {
+    return await this.adminCmsService.getSeedStageByProjectid(query)
   }
 
   @Patch('round/:seedStageAddress/:roundId')

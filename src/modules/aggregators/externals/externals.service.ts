@@ -1,8 +1,8 @@
 import { AuthService } from '@/modules/shared/auth/auth.service'
 import { Injectable } from '@nestjs/common'
-import { GetStagesDto } from './dto/request.dto'
 import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.service'
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
+import { GetStagesDto } from '@/modules/resources/seedstage/dto/request.dto'
 
 @Injectable()
 export class ExternalsService {

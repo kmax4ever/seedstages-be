@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { ExternalsService } from './externals.service'
-import { GetStagesDto } from './dto/request.dto'
+import { GetStagesDto } from '@/modules/resources/seedstage/dto/request.dto'
 
 @ApiTags('Depository')
 @ApiBearerAuth()

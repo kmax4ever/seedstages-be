@@ -10,6 +10,11 @@ import {
 import { StageStatus } from './general.dto'
 
 export class GetStagesDto extends PaginationQueriesDto {
+  @ApiProperty({ type: String, required: true })
+  @IsOptional()
+  @IsString()
+  projectId: string
+
   @ApiProperty({ type: String, required: false, default: '' })
   @IsOptional()
   @IsString()
