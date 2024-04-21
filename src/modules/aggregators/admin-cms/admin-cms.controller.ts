@@ -8,7 +8,9 @@ import {
   UsePipes,
   ValidationPipe,
   Patch,
-  Delete
+  Delete,
+  Request,
+  Query
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
 import {
@@ -27,7 +29,10 @@ import {
   CreateSeedstageDto,
   UpdateSeedStageDto
 } from '@/modules/resources/seedstage/dto/request.dto'
-import { UpdateProjectDto } from '@/modules/resources/projects/dto/request.dto'
+import {
+  GetProjectsDto,
+  UpdateProjectDto
+} from '@/modules/resources/projects/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -107,5 +112,20 @@ export class AdminCmsController {
   @Delete('project/:projectId')
   async deleteProject(@Param('projectId') projectId: string) {
     return await this.adminCmsService.deleteProject(projectId)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('project/:projectId')
+  async getProjectById(@Param('projectId') projectId: string) {
+    return await this.adminCmsService.getProjectById(projectId)
+  }
+
+  //@UseGuards(JwtUserAuthGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('projects')
+  async getProjects(@Request() req: any, @Query() query: GetProjectsDto) {
+    return await this.adminCmsService.getProjects(query)
   }
 }

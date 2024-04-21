@@ -27,4 +27,7 @@ export class ExternalsController {
   async getStageById(@Param('stageSlug') stageSlug: string) {
     return this.externalsService.getStageBySlug(stageSlug)
   }
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Get('project/:subdomain')
+  async getProjectBySubdomain(@Param('subdomain') subdomain: string) {}
 }

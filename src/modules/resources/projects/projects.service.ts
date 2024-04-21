@@ -14,6 +14,10 @@ export class ProjectsService {
     return this.projectModel.findOne({ projectId })
   }
 
+  async getProjectBySudomain(subdomain: string) {
+    return this.projectModel.findOne({ subdomain })
+  }
+
   async getProjects(getProjectsDto: GetProjectsDto) {
     const offset = getProjectsDto.offset || 0
     const limit = getProjectsDto.limit || 10
@@ -31,7 +35,7 @@ export class ProjectsService {
     let searches = []
     if (getProjectsDto.search) {
       searches = [
-        { assetName: { $regex: getProjectsDto.search, $options: 'i' } }
+        { projectName: { $regex: getProjectsDto.search, $options: 'i' } }
       ]
     }
 
@@ -49,16 +53,16 @@ export class ProjectsService {
       queries['$and'] = filters
     }
 
-    const assets = await this.projectModel
-      .find(queries, null, options)
-      .populate('assetType')
-    const total = await this.projectModel.countDocuments(queries)
+    const [lists, total] = await Promise.all([
+      this.projectModel.find(queries, null, options),
+      this.projectModel.countDocuments(queries)
+    ])
 
     return {
       total,
       offset,
       limit,
-      data: assets
+      data: lists
     }
   }
 

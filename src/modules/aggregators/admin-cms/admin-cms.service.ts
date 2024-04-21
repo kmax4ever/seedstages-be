@@ -19,7 +19,10 @@ import {
   CreateSeedstageDto,
   UpdateSeedStageDto
 } from '@/modules/resources/seedstage/dto/request.dto'
-import { UpdateProjectDto } from '@/modules/resources/projects/dto/request.dto'
+import {
+  GetProjectsDto,
+  UpdateProjectDto
+} from '@/modules/resources/projects/dto/request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -141,37 +144,15 @@ export class AdminCmsService {
     return await this.projectsService.delete(projectId)
   }
 
-  // async createSeedstage(createSeedstageDto: CreateSeedstageDto) {
-  //   const project = await this.projectsService.getProjectById(
-  //     createSeedstageDto.project
-  //   )
+  async getProjectById(projectId: string) {
+    const project = await this.projectsService.getProjectById(projectId)
+    if (!project) {
+      throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return project
+  }
 
-  //   if (!project) {
-  //     throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
-  //   }
-
-  //   const iouToken = await this.iouTokensService.getIouToken(
-  //     createSeedstageDto.iouToken
-  //   )
-
-  //   if (!iouToken) {
-  //     throw new HttpException('iou token not found', HttpStatus.NOT_FOUND)
-  //   }
-  //   return this.seedstagesService.createSeedstage(createSeedstageDto)
-  // }
-
-  // async createIouToken(createIouTokenDto: CreateIouTokenDto) {
-  //   const project = await this.projectsService.getProjectById(
-  //     createIouTokenDto.project
-  //   )
-
-  //   if (!project) {
-  //     throw new HttpException('Project not found', HttpStatus.NOT_FOUND)
-  //   }
-  //   return this.iouTokensService.updateIouToken(createIouTokenDto)
-  // }
-
-  // async creatStageRound(createStageRoundDto: CreateStageRoundDto) {
-  //   return this.seedstageRoundsService.createStageRound(createStageRoundDto)
-  // }
+  async getProjects(dto: GetProjectsDto) {
+    return this.projectsService.getProjects(dto)
+  }
 }
