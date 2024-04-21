@@ -3,6 +3,7 @@ import {
   CmsCreateIouTokenDto,
   CmsCreateStageRoundDto,
   CmsSetTokenAdmin,
+  CmsUpdateRound,
   CreateProjectDto,
   CreateStageRoundDto,
   LoginDto
@@ -14,7 +15,11 @@ import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.servi
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
 import { IouTokensService } from '@/modules/resources/iou-token/iou-token.service'
 import { EthersService } from '@/modules/adapters/ethers/ethers.service'
-import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
+import {
+  CreateSeedstageDto,
+  UpdateSeedStageDto
+} from '@/modules/resources/seedstage/dto/request.dto'
+import { UpdateProjectDto } from '@/modules/resources/projects/dto/request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -88,6 +93,52 @@ export class AdminCmsService {
       throw new HttpException('ERROR!', HttpStatus.BAD_REQUEST)
     }
     return txhash
+  }
+
+  async updateProject(projectId: string, updateProjectDto: UpdateProjectDto) {
+    const project = await this.projectsService.getProjectById(projectId)
+    if (!project) {
+      throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.projectsService.updateProject(projectId, updateProjectDto)
+  }
+
+  async updateSeedStage(
+    seedStageAddress: string,
+    updateDto: UpdateSeedStageDto
+  ) {
+    const project = await this.seedstagesService.getStageById(seedStageAddress)
+    if (!project) {
+      throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.seedstagesService.updateInfo(seedStageAddress, updateDto)
+  }
+
+  async updateSeedStageRound(
+    seedStageAddress: string,
+    roundId: string,
+    updateDto: CmsUpdateRound
+  ) {
+    const round = await this.seedstageRoundsService.getStageRoundById(
+      seedStageAddress,
+      roundId
+    )
+    if (!round) {
+      throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.seedstageRoundsService.updateRound(
+      seedStageAddress,
+      roundId,
+      updateDto
+    )
+  }
+
+  async deleteProject(projectId: string) {
+    const project = await this.projectsService.getProjectById(projectId)
+    if (!project) {
+      throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.projectsService.delete(projectId)
   }
 
   // async createSeedstage(createSeedstageDto: CreateSeedstageDto) {

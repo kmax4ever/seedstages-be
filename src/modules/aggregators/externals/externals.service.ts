@@ -17,10 +17,10 @@ export class ExternalsService {
   }
 
   async getStageBySlug(stageSlug: string) {
-    const stage = await this.seedStagesService.getStageBySlug(stageSlug)
-    const stageRound = await this.seedstageRoundsService.getStageRoundByStageId(
-      stage.id
-    )
-    return { ...stage, stageRound }
+    // const stage = await this.seedStagesService.getStageBySlug(stageSlug)
+    // const stageRound = await this.seedstageRoundsService.getStageRoundByStageId(
+    //   stage.id
+    // )
+    // return { ...stage, stageRound }
   }
 }

@@ -12,11 +12,6 @@ export const SeedstageRoundSchema = new mongoose.Schema(
       type: String,
       required: false
     },
-    roundType: {
-      type: String,
-      enum: RoundType,
-      required: false
-    },
     roundId: {
       type: String,
       required: false

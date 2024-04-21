@@ -14,6 +14,11 @@ export const ProjectSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    subdomain: {
+      type: String,
+      required: false,
+      unique: true
+    },
     shortDescription: {
       type: String,
       required: false
@@ -45,6 +50,11 @@ export const ProjectSchema = new mongoose.Schema(
     banner: {
       type: String,
       required: false
+    },
+    isDeleted: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   {

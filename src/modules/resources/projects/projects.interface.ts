@@ -4,6 +4,7 @@ export interface Project extends Document {
   projectId: string
   projectName: string
   projectCode: string
+  subdomain: string
   shortDescription: string
   fullDescription: string
   website: string

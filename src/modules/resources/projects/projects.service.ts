@@ -11,7 +11,7 @@ export class ProjectsService {
   constructor(@InjectModel('Project') private projectModel: Model<Project>) {}
 
   async getProjectById(projectId: string) {
-    return this.projectModel.findById(projectId)
+    return this.projectModel.findOne({ projectId })
   }
 
   async getProjects(getProjectsDto: GetProjectsDto) {
@@ -75,6 +75,7 @@ export class ProjectsService {
       },
       pick(
         updateDto,
+        'subdomain',
         'shortDescription',
         'fullDescription',
         'website',
@@ -83,7 +84,21 @@ export class ProjectsService {
         'discord',
         'logo',
         'banner'
-      )
+      ),
+      {
+        new: true
+      }
+    )
+  }
+  async delete(projectId) {
+    return this.projectModel.findOneAndUpdate(
+      {
+        projectId
+      },
+      { isDeleted: true },
+      {
+        new: true
+      }
     )
   }
 }

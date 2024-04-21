@@ -14,6 +14,12 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
+  subdomain: string
+
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   shortDescription: string
 
   @ApiProperty({ type: String, required: true })

@@ -15,21 +15,14 @@ export class SeedstagesService {
     @InjectModel('Seedstage') private seedstageModel: Model<Seedstage>
   ) {}
 
-  async getStageById(stageId: string) {
+  async getStageById(seedStageAddress: string) {
     return this.seedstageModel
-      .findById(stageId)
+      .findOne({ seedStageAddress })
       .populate('project')
       .populate('iouToken')
       .lean()
   }
 
-  async getStageBySlug(stageSlug: string) {
-    return this.seedstageModel
-      .findOne({ slug: stageSlug })
-      .populate('project')
-      .populate('iouToken')
-      .lean()
-  }
   async getStages(getStagesDto: GetStagesDto) {
     const offset = getStagesDto.offset || 0
     const limit = getStagesDto.limit || 10
@@ -95,10 +88,13 @@ export class SeedstagesService {
     return seedstages.map((i) => i.seedStageAddress)
   }
 
-  async udpateInfo(seedStageAddress: string, updateDto: UpdateSeedStageDto) {
+  async updateInfo(seedStageAddress: string, updateDto: UpdateSeedStageDto) {
     return this.seedstageModel.findOneAndUpdate(
       { seedStageAddress },
-      pick(updateDto, 'name', 'status')
+      pick(updateDto, 'name', 'status'),
+      {
+        new: true
+      }
     )
   }
   async update(seedStageAddress: string, updateData) {

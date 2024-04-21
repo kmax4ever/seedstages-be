@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { StageStatus } from './dto/general.dto'
-
+import { ProjectSchema } from '../projects/projects.schema'
 export const SeedstageSchema = new mongoose.Schema(
   {
     projectId: {
@@ -50,4 +50,12 @@ SeedstageSchema.set('toJSON', {
     delete ret.password
     delete ret.__v
   }
+})
+
+SeedstageSchema.virtual('project', {
+  ref: `Project`,
+  localField: 'projectId',
+  foreignField: 'projectId',
+  options: {},
+  justOne: true
 })

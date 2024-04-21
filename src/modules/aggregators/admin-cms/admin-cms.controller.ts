@@ -6,13 +6,16 @@ import {
   Post,
   UseGuards,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
+  Patch,
+  Delete
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
 import {
   CmsCreateIouTokenDto,
   CmsCreateStageRoundDto,
   CmsSetTokenAdmin,
+  CmsUpdateRound,
   CreateProjectDto,
   CreateStageRoundDto,
   LoginDto
@@ -20,7 +23,11 @@ import {
 import { JwtUserAuthGuard } from '@/modules/common/guards/jwt-user-auth.guard'
 import { LoginResponse } from './dto/response.dto'
 import { AdminCmsService } from './admin-cms.service'
-import { CreateSeedstageDto } from '@/modules/resources/seedstage/dto/request.dto'
+import {
+  CreateSeedstageDto,
+  UpdateSeedStageDto
+} from '@/modules/resources/seedstage/dto/request.dto'
+import { UpdateProjectDto } from '@/modules/resources/projects/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -61,35 +68,44 @@ export class AdminCmsController {
     return this.adminCmsService.createRound(createDto)
   }
 
-  @Post('temp/getTokens')
-  async getTokens() {
-    return this.adminCmsService.getTokens()
-  }
-
   @Post('temp/setAmin')
   async setAdmin(@Body() createDto: CmsSetTokenAdmin) {
     return this.adminCmsService.setAdmin(createDto)
   }
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // // @UseGuards(JwtUserAuthGuard)
-  // @Post('iou-tokens')
-  // async createIouToken(@Body() createIouTokenDto: CreateIouTokenDto) {
-  //   return this.adminCmsService.createIouToken(createIouTokenDto)
-  // }
 
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // // @UseGuards(JwtUserAuthGuard)
-  // @Post('seedstages')
-  // async createSeedstages(@Body() createSeedstageDto: CreateSeedstageDto) {
-  //   return this.adminCmsService.createSeedstage(createSeedstageDto)
-  // }
+  @Patch('project/:projectId')
+  async updateProject(
+    @Param('projectId') projectId: string,
+    @Body() updateDto: UpdateProjectDto
+  ) {
+    return await this.adminCmsService.updateProject(projectId, updateDto)
+  }
 
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // // @UseGuards(JwtUserAuthGuard)
-  // @Post('seedstage-rounds')
-  // async createSeedstageRounds(
-  //   @Body() createStageRoundDto: CreateStageRoundDto
-  // ) {
-  //   return this.adminCmsService.creatStageRound(createStageRoundDto)
-  // }
+  @Patch('seedStage/:seedStageAddress')
+  async updateSeedStage(
+    @Param('seedStageAddress') seedStageAddress: string,
+    @Body() updateDto: UpdateSeedStageDto
+  ) {
+    return await this.adminCmsService.updateSeedStage(
+      seedStageAddress,
+      updateDto
+    )
+  }
+
+  @Patch('round/:seedStageAddress/:roundId')
+  async updateRound(
+    @Param('seedStageAddress') seedStageAddress: string,
+    @Param('roundId') roundId: string,
+    @Body() updateDto: CmsUpdateRound
+  ) {
+    return await this.adminCmsService.updateSeedStageRound(
+      seedStageAddress,
+      roundId,
+      updateDto
+    )
+  }
+  @Delete('project/:projectId')
+  async deleteProject(@Param('projectId') projectId: string) {
+    return await this.adminCmsService.deleteProject(projectId)
+  }
 }

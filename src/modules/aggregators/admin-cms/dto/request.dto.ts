@@ -183,3 +183,11 @@ export class CmsSetTokenAdmin {
   @IsNotEmpty()
   seedStageAddress: string
 }
+
+export class CmsUpdateRound {
+  @ApiProperty({ type: String, required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name: string
+}
