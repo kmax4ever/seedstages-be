@@ -6,6 +6,8 @@ import { ExternalsService } from './externals.service'
 import { ExternalsController } from './externals.controller'
 import { SeedstagesModule } from '@/modules/resources/seedstage/seedstage.module'
 import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedstage-round.module'
+import { ProjectsModule } from '@/modules/resources/projects/projects.module'
+import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposit-history.module'
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedst
     PermissionModule,
     RoleModule,
     SeedstagesModule,
-    SeedstageRoundModule
+    SeedstageRoundModule,
+    ProjectsModule,
+    DepositHistoryModule
   ],
   providers: [ExternalsService],
   controllers: [ExternalsController]

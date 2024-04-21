@@ -15,11 +15,11 @@ export class SeedstageRoundsService {
     private seedstageRoundModel: Model<SeedstageRound>
   ) {}
 
-  async getStageRoundById(seedStageAddress: string, roundId: string) {
+  async getRoundById(seedStageAddress: string, roundId: string) {
     return this.seedstageRoundModel.findOne({ seedStageAddress, roundId })
   }
 
-  async getStageRounds(seedStageAddress: string) {
+  async getRounds(seedStageAddress: string) {
     return this.seedstageRoundModel.find({ seedStageAddress })
   }
 

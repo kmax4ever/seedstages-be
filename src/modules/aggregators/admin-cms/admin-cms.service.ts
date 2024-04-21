@@ -31,6 +31,8 @@ import {
   UpdateDepositTokenDto
 } from '@/modules/resources/deposit-token/dto/request.dto'
 import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
+import { GetDepositHistoryDto } from '@/modules/resources/deposit-history/dto/request.dto'
+import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
 
 @Injectable()
 export class AdminCmsService {
@@ -42,7 +44,8 @@ export class AdminCmsService {
     private iouTokensService: IouTokensService,
     private seedstageRoundsService: SeedstageRoundsService,
     private ethersService: EthersService,
-    private depositTokensService: DepositTokensService
+    private depositTokensService: DepositTokensService,
+    private depositHistorysService: DepositHistorysService
   ) {}
 
   async login(loginData: LoginDto) {
@@ -131,7 +134,7 @@ export class AdminCmsService {
     roundId: string,
     updateDto: CmsUpdateRound
   ) {
-    const round = await this.seedstageRoundsService.getStageRoundById(
+    const round = await this.seedstageRoundsService.getRoundById(
       seedStageAddress,
       roundId
     )
@@ -228,5 +231,23 @@ export class AdminCmsService {
 
   async getSeedStageByProjectid(searchDto: GetStagesDto) {
     return await this.seedstagesService.getStages(searchDto)
+  }
+
+  async getRounds(seedStageAddress: string) {
+    const seedStage = await this.seedstageRoundsService.getRounds(
+      seedStageAddress
+    )
+    return seedStage
+  }
+
+  async getRoundById(seedStageAddress: string, roundId: string) {
+    return await this.seedstageRoundsService.getRoundById(
+      seedStageAddress,
+      roundId
+    )
+  }
+
+  async getDepositHistory(queryDto: GetDepositHistoryDto) {
+    return await this.depositHistorysService.getHistory(queryDto)
   }
 }

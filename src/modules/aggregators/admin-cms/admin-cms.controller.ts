@@ -40,6 +40,7 @@ import {
 } from '@/modules/resources/deposit-token/dto/request.dto'
 import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
 import { query } from 'express'
+import { GetDepositHistoryDto } from '@/modules/resources/deposit-history/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -103,7 +104,8 @@ export class AdminCmsController {
       updateDto
     )
   }
-
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
   @Get('seedStage/:seedStageAddress')
   async getSeedStage(@Param('seedStageAddress') seedStageAddress: string) {
     return await this.adminCmsService.getSeedstage(seedStageAddress)
@@ -116,7 +118,24 @@ export class AdminCmsController {
     return await this.adminCmsService.getSeedStageByProjectid(query)
   }
 
-  @Patch('round/:seedStageAddress/:roundId')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('getRounds/:seedStageAddress')
+  async getSeedStageRound(@Param('seedStageAddress') seedStageAddress: string) {
+    return await this.adminCmsService.getRounds(seedStageAddress)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('getRoundById/:seedStageAddress/:roundId')
+  async getRoundById(
+    @Param('seedStageAddress') seedStageAddress: string,
+    @Param('roundId') roundId: string
+  ) {
+    return await this.adminCmsService.getRoundById(seedStageAddress, roundId)
+  }
+
+  @Patch('updateRound/:seedStageAddress/:roundId')
   async updateRound(
     @Param('seedStageAddress') seedStageAddress: string,
     @Param('roundId') roundId: string,
@@ -214,5 +233,11 @@ export class AdminCmsController {
     @Body() body: UpdateIOUTokenDto
   ) {
     return await this.adminCmsService.updateIouToken(tokenAddress, body)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Get('depositHistory')
+  async getSee(@Query() query: GetDepositHistoryDto) {
+    return await this.adminCmsService.getDepositHistory(query)
   }
 }
