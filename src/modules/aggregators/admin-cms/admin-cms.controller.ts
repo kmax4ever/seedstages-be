@@ -37,6 +37,7 @@ import {
   CreateDepositTokenDto,
   UpdateDepositTokenDto
 } from '@/modules/resources/deposit-token/dto/request.dto'
+import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -168,5 +169,36 @@ export class AdminCmsController {
     @Body() body: UpdateDepositTokenDto
   ) {
     return await this.adminCmsService.updateDepositToken(tokenAddress, body)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('iou-token/:projectId')
+  async getIouToken(
+    @Request() req: any,
+    @Param('projectId') projectId: string
+  ) {
+    return await this.adminCmsService.getIouTokenByProjectId(projectId)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('iou-token-by-address/:tokenAddress')
+  async getIouTokenByAddress(
+    @Request() req: any,
+    @Param('tokenAddress') tokenAddress: string
+  ) {
+    return await this.adminCmsService.getIouTokenByAddress(tokenAddress)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Patch('iou-token/:tokenAddress')
+  async updateIouToken(
+    @Request() req: any,
+    @Param('tokenAddress') tokenAddress: string,
+    @Body() body: UpdateIOUTokenDto
+  ) {
+    return await this.adminCmsService.updateIouToken(tokenAddress, body)
   }
 }

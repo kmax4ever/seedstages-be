@@ -29,6 +29,7 @@ import {
   CreateDepositTokenDto,
   UpdateDepositTokenDto
 } from '@/modules/resources/deposit-token/dto/request.dto'
+import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -192,5 +193,25 @@ export class AdminCmsService {
       throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
     }
     return this.depositTokensService.update(tokenAddress, updateDto)
+  }
+
+  async getIouTokenByAddress(tokenAddress: string) {
+    const token = await this.iouTokensService.getIouToken(tokenAddress)
+    if (!token) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return token
+  }
+
+  async getIouTokenByProjectId(projectId: string) {
+    return this.iouTokensService.getList(projectId)
+  }
+
+  async updateIouToken(tokenAddress: string, updateDto: UpdateIOUTokenDto) {
+    const token = await this.iouTokensService.getIouToken(tokenAddress)
+    if (!token) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.iouTokensService.updateIouToken(tokenAddress, updateDto)
   }
 }

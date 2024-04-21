@@ -8,7 +8,7 @@ import {
   isEthereumAddress
 } from 'class-validator'
 
-export class UpdateTokenDto {
+export class UpdateIOUTokenDto {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsUrl()
