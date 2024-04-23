@@ -115,6 +115,13 @@ export class AdminCmsService {
     if (!project) {
       throw new HttpException('NOT_FOUND!', HttpStatus.NOT_FOUND)
     }
+    const existsDomain = await this.projectsService.getProjectBySudomain(
+      updateProjectDto.subdomain
+    )
+
+    if (existsDomain) {
+      throw new HttpException('EXISTS DOMAIN!', HttpStatus.BAD_REQUEST)
+    }
     return await this.projectsService.updateProject(projectId, updateProjectDto)
   }
 
