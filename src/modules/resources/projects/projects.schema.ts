@@ -16,8 +16,7 @@ export const ProjectSchema = new mongoose.Schema(
     },
     subdomain: {
       type: String,
-      required: false,
-      unique: true
+      required: false
     },
     shortDescription: {
       type: String,

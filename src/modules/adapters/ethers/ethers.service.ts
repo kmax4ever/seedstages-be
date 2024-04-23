@@ -226,13 +226,13 @@ export class EthersService {
         to,
         data: dataObj
       } as any
-      const [feeData, gasLimit] = await Promise.all([
-        this.provider.getFeeData(),
-        this.provider.estimateGas(tx)
-      ])
+      // const [feeData, gasLimit] = await Promise.all([
+      //   this.provider.getFeeData(),
+      //   this.provider.estimateGas(tx)
+      // ])
 
-      tx['gasLimit'] = gasLimit
-      tx['gasPrice'] = feeData.gasPrice
+      // tx['gasLimit'] = gasLimit
+      // tx['gasPrice'] = feeData.gasPrice
 
       const txn = await wallet.sendTransaction(tx)
       await txn.wait()

@@ -12,6 +12,7 @@ import { SeedstagesService } from '@/modules/resources/seedstage/seedstage.servi
 import { SeedstageRoundsService } from '@/modules/resources/seedstage-round/seedstage-round.service'
 import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
 import { EthersService } from './ethers.service'
+import BigNumber from 'bignumber.js'
 
 var CONTRACT_SYNC = CONTRACT_NEED_SYNC
 @Injectable()
@@ -202,9 +203,24 @@ export class SyncService implements OnModuleInit {
   private async _handleUserDeposited(event) {
     console.log(event)
     const seedStageAddress = event.address
+    const { roundId, amount } = event.data
     await this.depositHistorysService.create({
       seedStageAddress,
       ...event.data
     })
+
+    const round = await this.seedstageRoundsService.getRoundById(
+      seedStageAddress,
+      roundId
+    )
+    const raisedAmount = new BigNumber(round.raisedAmount)
+      .plus(new BigNumber(amount))
+      .toFixed()
+
+    await this.seedstageRoundsService.updateRaiseAmount(
+      seedStageAddress,
+      roundId,
+      raisedAmount
+    )
   }
 }

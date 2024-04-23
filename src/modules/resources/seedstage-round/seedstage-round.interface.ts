@@ -11,4 +11,5 @@ export interface SeedstageRound extends Document {
   startTime: string
   endTime: string
   whitelistAddress: string
+  raisedAmount: string
 }

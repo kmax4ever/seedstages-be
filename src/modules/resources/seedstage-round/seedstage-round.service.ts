@@ -16,7 +16,9 @@ export class SeedstageRoundsService {
   ) {}
 
   async getRoundById(seedStageAddress: string, roundId: string) {
-    return this.seedstageRoundModel.findOne({ seedStageAddress, roundId })
+    return this.seedstageRoundModel
+      .findOne({ seedStageAddress, roundId })
+      .lean()
   }
 
   async getRounds(seedStageAddress: string) {
@@ -52,6 +54,23 @@ export class SeedstageRoundsService {
         roundId
       },
       pick(createStageRoundDto, `name`, 'roundType'),
+      {
+        new: true
+      }
+    )
+  }
+
+  async updateRaiseAmount(
+    seedStageAddress: string,
+    roundId: string,
+    raisedAmount: string
+  ) {
+    return this.seedstageRoundModel.findOneAndUpdate(
+      {
+        seedStageAddress,
+        roundId
+      },
+      { raisedAmount },
       {
         new: true
       }
