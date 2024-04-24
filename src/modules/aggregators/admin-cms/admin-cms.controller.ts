@@ -45,6 +45,7 @@ import {
   CreateBackerDto,
   UpdateBackerDto
 } from '@/modules/resources/backer/dto/request.dto'
+import { CreateUserDto } from '@/modules/resources/users/dto/user-request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -60,9 +61,15 @@ export class AdminCmsController {
   async login(@Body() loginData: LoginDto) {
     return this.adminCmsService.login(loginData)
   }
+
+  // @Post('createUser')
+  // async createUser(@Body() createUser: CreateUserDto) {
+  //   return this.adminCmsService.createUser(createUser)
+  // }
+
   //TODO remove when have cms ui
   @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Post('temp/projects')
   async createProject(@Body() createProjectDto: CreateProjectDto) {
     return this.adminCmsService.createProject(createProjectDto)
@@ -70,27 +77,31 @@ export class AdminCmsController {
 
   //TODO remove when have cms ui
   @UsePipes(new ValidationPipe({ transform: true }))
-  // @UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Post('temp/seedStage')
   async createSeedStage(@Body() createDto: CreateSeedstageDto) {
     return this.adminCmsService.createSeedStage(createDto)
   }
   //TODO remove when have cms ui
   @Post('temp/createIouToken')
+  @UseGuards(JwtUserAuthGuard)
   async createIouToken(@Body() createDto: CmsCreateIouTokenDto) {
     return this.adminCmsService.createIouToken(createDto)
   }
   @Post('temp/createRound')
+  @UseGuards(JwtUserAuthGuard)
   async createRound(@Body() createDto: CmsCreateStageRoundDto) {
     return this.adminCmsService.createRound(createDto)
   }
 
   @Post('temp/setAmin')
+  @UseGuards(JwtUserAuthGuard)
   async setAdmin(@Body() createDto: CmsSetTokenAdmin) {
     return this.adminCmsService.setAdmin(createDto)
   }
 
   @Patch('project/:projectId')
+  @UseGuards(JwtUserAuthGuard)
   async updateProject(
     @Param('projectId') projectId: string,
     @Body() updateDto: UpdateProjectDto
@@ -99,6 +110,7 @@ export class AdminCmsController {
   }
 
   @Patch('seedStage/:seedStageAddress')
+  @UseGuards(JwtUserAuthGuard)
   async updateSeedStage(
     @Param('seedStageAddress') seedStageAddress: string,
     @Body() updateDto: UpdateSeedStageDto
@@ -116,14 +128,14 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Get('seedStagesByProjectId')
   async getSeedStages(@Request() req: any, @Query() query: GetStagesDto) {
     return await this.adminCmsService.getSeedStageByProjectid(query)
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Get('getRounds/:seedStageAddress')
   async getSeedStageRound(@Param('seedStageAddress') seedStageAddress: string) {
     return await this.adminCmsService.getRounds(seedStageAddress)
@@ -140,6 +152,7 @@ export class AdminCmsController {
   }
 
   @Patch('updateRound/:seedStageAddress/:roundId')
+  @UseGuards(JwtUserAuthGuard)
   async updateRound(
     @Param('seedStageAddress') seedStageAddress: string,
     @Param('roundId') roundId: string,
@@ -152,6 +165,7 @@ export class AdminCmsController {
     )
   }
   @Delete('project/:projectId')
+  @UseGuards(JwtUserAuthGuard)
   async deleteProject(@Param('projectId') projectId: string) {
     return await this.adminCmsService.deleteProject(projectId)
   }
@@ -188,7 +202,7 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Post('deposit-token')
   async createDepositToken(
     @Request() req: any,
@@ -198,7 +212,7 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Patch('deposit-token/:tokenAddress')
   async updateDepositToken(
     @Request() req: any,
@@ -229,7 +243,7 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Patch('iou-token/:tokenAddress')
   async updateIouToken(
     @Request() req: any,
@@ -260,14 +274,14 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Post('backer')
   async createBacker(@Request() req: any, @Body() body: CreateBackerDto) {
     return await this.adminCmsService.createBacker(body)
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Patch('backer/:backerId')
   async updateBacker(
     @Request() req: any,
@@ -278,7 +292,7 @@ export class AdminCmsController {
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
-  //@UseGuards(JwtUserAuthGuard)
+  @UseGuards(JwtUserAuthGuard)
   @Delete('backer/:backerId')
   async deleteBacker(@Request() req: any, @Param('backerId') backerId: string) {
     return await this.adminCmsService.deleteBacker(backerId)

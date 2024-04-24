@@ -38,6 +38,7 @@ import {
   UpdateBackerDto
 } from '@/modules/resources/backer/dto/request.dto'
 import { BackerService } from '@/modules/resources/backer/backer.service'
+import { CreateUserDto } from '@/modules/resources/users/dto/user-request.dto'
 
 @Injectable()
 export class AdminCmsService {
@@ -62,6 +63,11 @@ export class AdminCmsService {
 
     return this.authService.generateUserAccessToken(cmsUser)
   }
+
+  async createUser(createUser: CreateUserDto) {
+    await this.usersService.createUser(createUser)
+  }
+
   //TODO REMOVE WHEN HAS CMS FE
   async createProject(createProjectDto: CreateProjectDto) {
     const txhash = await this.ethersService.createProject(

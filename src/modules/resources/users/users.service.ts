@@ -76,14 +76,14 @@ export class UsersService {
 
       const newUserData = omit(userData, 'password', 'role')
 
-      const role = await this.roleService.findById(userData.role)
-      if (role) {
-        newUserData['role'] = role.id
+      // const role = await this.roleService.findById(userData.role)
+      // if (role) {
+      //   newUserData['role'] = role.id
 
-        newUserData['password'] = await bcrypt.hash(userData.password, salt)
+      newUserData['password'] = await bcrypt.hash(userData.password, salt)
 
-        return await this.userModel.create(newUserData)
-      }
+      return await this.userModel.create(newUserData)
+      // }
     } catch (error) {
       throw error
     }
