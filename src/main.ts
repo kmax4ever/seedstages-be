@@ -34,8 +34,8 @@ async function bootstrap() {
   SwaggerModule.setup('swagger-internal', app, internalDocument)
 
   const adminCmsConfig = new DocumentBuilder()
-    .setTitle('rAsset Admin')
-    .setDescription('rAsset Admin API document')
+    .setTitle('Admin')
+    .setDescription('Admin API document')
     .setVersion('1.0')
     .addBearerAuth()
     .build()
@@ -46,8 +46,8 @@ async function bootstrap() {
   SwaggerModule.setup('/swagger-admin', app, adminCmsDocument)
 
   const depositoryConfig = new DocumentBuilder()
-    .setTitle('redao External')
-    .setDescription('redao External API document')
+    .setTitle('Whitelabel External')
+    .setDescription('Whitelabel External API document')
     .setVersion('1.0')
     .addBearerAuth()
     .build()
