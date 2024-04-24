@@ -6,6 +6,7 @@ import { GetStagesDto } from '@/modules/resources/seedstage/dto/request.dto'
 import { ProjectsService } from '@/modules/resources/projects/projects.service'
 import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
 import { GetDepositHistoryDto } from '@/modules/resources/deposit-history/dto/request.dto'
+import { BackerService } from '@/modules/resources/backer/backer.service'
 
 @Injectable()
 export class ExternalsService {
@@ -14,11 +15,16 @@ export class ExternalsService {
     private seedStagesService: SeedstagesService,
     private seedstageRoundsService: SeedstageRoundsService,
     private projectsService: ProjectsService,
-    private depositHistorysService: DepositHistorysService
+    private depositHistorysService: DepositHistorysService,
+    private backerService: BackerService
   ) {}
 
   async getProject(subdomain: string) {
-    return await this.projectsService.getProjectBySudomain(subdomain)
+    const project = await this.projectsService.getProjectBySudomain(subdomain)
+    if (!project) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return project
   }
 
   async getStages(getStagesDto: GetStagesDto) {
@@ -46,13 +52,21 @@ export class ExternalsService {
   }
 
   async getRoundById(seedStageAddress: string, roundId: string) {
-    return await this.seedstageRoundsService.getRoundById(
+    const round = await this.seedstageRoundsService.getRoundById(
       seedStageAddress,
       roundId
     )
+    if (!round) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return round
   }
 
   async getDepositHistory(queryDto: GetDepositHistoryDto) {
     return await this.depositHistorysService.getHistory(queryDto)
+  }
+
+  async getBackers(projectId: string) {
+    return await this.backerService.getByProjectId(projectId)
   }
 }

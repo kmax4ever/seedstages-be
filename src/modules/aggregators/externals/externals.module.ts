@@ -8,6 +8,7 @@ import { SeedstagesModule } from '@/modules/resources/seedstage/seedstage.module
 import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedstage-round.module'
 import { ProjectsModule } from '@/modules/resources/projects/projects.module'
 import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposit-history.module'
+import { BackerModule } from '@/modules/resources/backer/backer.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposi
     SeedstagesModule,
     SeedstageRoundModule,
     ProjectsModule,
-    DepositHistoryModule
+    DepositHistoryModule,
+    BackerModule
   ],
   providers: [ExternalsService],
   controllers: [ExternalsController]

@@ -12,6 +12,7 @@ import { SeedstageRoundModule } from '@/modules/resources/seedstage-round/seedst
 import { DepositToken } from '@/modules/resources/deposit-token/deposit-token.module'
 import { EthersModule } from '@/modules/adapters/ethers/ethers.module'
 import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposit-history.module'
+import { BackerModule } from '@/modules/resources/backer/backer.module'
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { DepositHistoryModule } from '@/modules/resources/deposit-history/deposi
     SeedstageRoundModule,
     DepositToken,
     EthersModule,
-    DepositHistoryModule
+    DepositHistoryModule,
+    BackerModule
   ],
   providers: [AdminCmsService],
   controllers: [AdminCmsController]

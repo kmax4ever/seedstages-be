@@ -56,4 +56,10 @@ export class ExternalsController {
   async getSee(@Query() query: GetDepositHistoryDto) {
     return await this.externalsService.getDepositHistory(query)
   }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Get('backers/:projectId')
+  async getBackers(@Request() req: any, @Param('projectId') projectId: string) {
+    return await this.externalsService.getBackers(projectId)
+  }
 }

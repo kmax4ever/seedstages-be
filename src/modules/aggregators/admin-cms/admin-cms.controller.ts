@@ -41,6 +41,10 @@ import {
 import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
 import { query } from 'express'
 import { GetDepositHistoryDto } from '@/modules/resources/deposit-history/dto/request.dto'
+import {
+  CreateBackerDto,
+  UpdateBackerDto
+} from '@/modules/resources/backer/dto/request.dto'
 
 @ApiTags('Cms')
 @ApiBearerAuth()
@@ -239,5 +243,44 @@ export class AdminCmsController {
   @Get('depositHistory')
   async getSee(@Query() query: GetDepositHistoryDto) {
     return await this.adminCmsService.getDepositHistory(query)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('backers/:projectId')
+  async getBackers(@Request() req: any, @Param('projectId') projectId: string) {
+    return await this.adminCmsService.getBackers(projectId)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Get('backer/:backerId')
+  async getBacker(@Request() req: any, @Param('backerId') backerId: string) {
+    return await this.adminCmsService.getBacker(backerId)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Post('backer')
+  async createBacker(@Request() req: any, @Body() body: CreateBackerDto) {
+    return await this.adminCmsService.createBacker(body)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Patch('backer/:backerId')
+  async updateBacker(
+    @Request() req: any,
+    @Param('backerId') backerId: string,
+    @Body() body: UpdateBackerDto
+  ) {
+    return await this.adminCmsService.updatebacker(backerId, body)
+  }
+
+  @UsePipes(new ValidationPipe({ transform: true }))
+  //@UseGuards(JwtUserAuthGuard)
+  @Delete('backer/:backerId')
+  async deleteBacker(@Request() req: any, @Param('backerId') backerId: string) {
+    return await this.adminCmsService.deleteBacker(backerId)
   }
 }

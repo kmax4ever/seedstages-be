@@ -33,6 +33,11 @@ import {
 import { UpdateIOUTokenDto } from '@/modules/resources/iou-token/dto/request.dto'
 import { GetDepositHistoryDto } from '@/modules/resources/deposit-history/dto/request.dto'
 import { DepositHistorysService } from '@/modules/resources/deposit-history/deposit-history.service'
+import {
+  CreateBackerDto,
+  UpdateBackerDto
+} from '@/modules/resources/backer/dto/request.dto'
+import { BackerService } from '@/modules/resources/backer/backer.service'
 
 @Injectable()
 export class AdminCmsService {
@@ -45,7 +50,8 @@ export class AdminCmsService {
     private seedstageRoundsService: SeedstageRoundsService,
     private ethersService: EthersService,
     private depositTokensService: DepositTokensService,
-    private depositHistorysService: DepositHistorysService
+    private depositHistorysService: DepositHistorysService,
+    private backerService: BackerService
   ) {}
 
   async login(loginData: LoginDto) {
@@ -256,5 +262,43 @@ export class AdminCmsService {
 
   async getDepositHistory(queryDto: GetDepositHistoryDto) {
     return await this.depositHistorysService.getHistory(queryDto)
+  }
+
+  async createBacker(dto: CreateBackerDto) {
+    const { projectId } = dto
+    const project = await this.projectsService.getProjectById(projectId)
+    if (!project) {
+      if (!project) {
+        throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+      }
+    }
+    return await this.backerService.create(dto)
+  }
+  async updatebacker(backerId: string, dto: UpdateBackerDto) {
+    const backer = await this.backerService.getById(backerId)
+    if (!backer) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.backerService.update(backerId, dto)
+  }
+
+  async getBacker(backerId: string) {
+    const backer = await this.backerService.getById(backerId)
+    if (!backer) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return backer
+  }
+
+  async getBackers(projectId: string) {
+    return await this.backerService.getByProjectId(projectId)
+  }
+
+  async deleteBacker(backerId: string) {
+    const backer = await this.backerService.getById(backerId)
+    if (!backer) {
+      throw new HttpException('NOT FOUND!', HttpStatus.NOT_FOUND)
+    }
+    return await this.backerService.delete(backerId)
   }
 }
